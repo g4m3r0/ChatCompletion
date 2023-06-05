@@ -1,0 +1,56 @@
+﻿@page "/"
+@using ChatCompletion.Common
+
+<PageTitle>Index</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
+<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
+<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+
+@foreach (var message in ChatHistory)
+{
+    <MudCard>
+        <MudCardContent>
+            <MudText>@message.Sender</MudText>
+            <MudText Typo="Typo.body2">@message.Text</MudText>
+        </MudCardContent>
+    </MudCard>
+}
+
+@if (IsLoading)
+{
+    <MudProgressCircular />
+}
+
+<MudTextField @bind-Value="UserInput" Label="Type your message" Variant="Variant.Outlined"></MudTextField>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SendMessage">Send</MudButton>
+
+@code {
+    string UserInput = string.Empty;
+    List<Message> ChatHistory = new List<Message>();
+    bool IsLoading = false;
+
+    private async Task SendMessage()
+    {
+        try
+        {
+            ChatHistory.Add(new Message { Sender = "User", Text = UserInput });
+            IsLoading = true;
+            string response = await Common.ChatCompletion.CreateAsync(UserInput);
+            UserInput = string.Empty;
+            ChatHistory.Add(new Message { Sender = "AI", Text = response });
+            UserInput = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            ChatHistory.Add(new Message { Sender = "Error", Text = ex.Message });
+        }
+
+    }
+
+    public class Message
+    {
+        public string Sender { get; set; }
+        public string Text { get; set; }
+    }
+}
