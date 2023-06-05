@@ -10,42 +10,62 @@ using System.Threading.Tasks;
 
 public class ChatCompletion
 {
-    public static async Task<string> CreateAsync(string prompt)
+    public static async Task<string> CreateAsync(string prompt, string context)
     {
         // Split prompt into chunks of 4096 tokens.
-        var prompts = SplitPrompt(prompt);
+        var prompts = SplitPrompt($"Prompt: {prompt}", $"Context: {context}").ToArray();
         var totalResponse = new StringBuilder();
 
-        foreach (var chunk in prompts)
+        for (var i = 0; i < prompts.Count(); i++)
         {
             try
             {
+                var chunk = prompts[i];
                 var completion = await CompletionModel.CreateAsync(chunk);
                 var completionData = JsonSerializer.Deserialize<CompletionResponse>(completion);
                 var chatBotMessage = completionData?.Choices[0]?.Message?.Content ?? "No response found";
 
+                //totalResponse.Append($"Response for Chunk {i}:");
                 totalResponse.Append(chatBotMessage);
             }
             catch (HttpRequestException e)
             {
                 Console.WriteLine($"An error occurred: {e.Message}");
-                // If you want to stop processing on error, add a 'break' statement here.
             }
         }
 
         return totalResponse.ToString();
     }
 
-    private static IEnumerable<string> SplitPrompt(string prompt)
+    public static async Task<string> CreateAsync(string prompt)
     {
-        int maxTokenSize = 2000;
+            try
+            {
+                var completion = await CompletionModel.CreateAsync(prompt);
+                var completionData = JsonSerializer.Deserialize<CompletionResponse>(completion);
+                var chatBotMessage = completionData?.Choices[0]?.Message?.Content ?? "No response found";
+                return chatBotMessage;
+            }
+            catch (HttpRequestException e)
+            {
+                return $"An error occurred: {e.Message}";
+            }
+    }
 
-        var words = prompt.Split(' ');
+    private static IEnumerable<string> SplitPrompt(string prompt, string context)
+    {
+
+        var words = context.Split(' ');
+        var promptWords = prompt.Split(' ');
+
+        var maxTokenSize = 2000 - promptWords.Count();
         var chunks = new List<string>();
 
         for (int i = 0; i < words.Length; i += maxTokenSize)
         {
             var chunkWords = words.Skip(i).Take(maxTokenSize);
+
+            chunks.Add(string.Join(' ', promptWords));
             chunks.Add(string.Join(' ', chunkWords));
         }
 
