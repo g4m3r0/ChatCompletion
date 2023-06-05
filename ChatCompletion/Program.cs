@@ -12,11 +12,19 @@ namespace ChatCompletion
     {
         static async Task Main(string[] args)
         {
+            var chatBot = new ChatCompletion.Common.ChatCompletion();
+            chatBot.Endpoint = "https://free.churchless.tech";
+            //"https://chatgpt-api.shn.hk"
+
             while (true)
             {
                 Console.Write("You: ");
                 string prompt = Console.ReadLine();
+<<<<<<< Updated upstream
                 string response = await ChatCompletion.CreateAsync(prompt);
+=======
+                string response = await chatBot.CreateAsync(prompt);
+>>>>>>> Stashed changes
                 Console.WriteLine("ChatBot: " + response);
             }
         }
