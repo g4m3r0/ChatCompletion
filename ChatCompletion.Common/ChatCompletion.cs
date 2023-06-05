@@ -10,10 +10,7 @@ using System.Threading.Tasks;
 
 public class ChatCompletion
 {
-    public string Endpoint { get; set; } = "https://free.churchless.tech";
-    //public string Endpoint { get; set; } = ""https://chatgpt-api.shn.hk"
-
-    public async Task<string> CreateAsync(string prompt, string context)
+    public static async Task<string> CreateAsync(string prompt, string context)
     {
         // Split prompt into chunks of 4096 tokens.
         var prompts = SplitPrompt($"Prompt: {prompt}", $"Context: {context}").ToArray();
@@ -24,7 +21,7 @@ public class ChatCompletion
             try
             {
                 var chunk = prompts[i];
-                var completion = await CompletionModel.CreateAsync(this.Endpoint, chunk);
+                var completion = await CompletionModel.CreateAsync(chunk);
                 var completionData = JsonSerializer.Deserialize<CompletionResponse>(completion);
                 var chatBotMessage = completionData?.Choices[0]?.Message?.Content ?? "No response found";
 
@@ -40,11 +37,11 @@ public class ChatCompletion
         return totalResponse.ToString();
     }
 
-    public async Task<string> CreateAsync(string prompt)
+    public static async Task<string> CreateAsync(string prompt)
     {
             try
             {
-                var completion = await CompletionModel.CreateAsync(this.Endpoint, prompt);
+                var completion = await CompletionModel.CreateAsync(prompt);
                 var completionData = JsonSerializer.Deserialize<CompletionResponse>(completion);
                 var chatBotMessage = completionData?.Choices[0]?.Message?.Content ?? "No response found";
                 return chatBotMessage;

@@ -30,15 +30,13 @@
     List<Message> ChatHistory = new List<Message>();
     bool IsLoading = false;
 
-    ChatCompletion chatBot = new ChatCompletion();
-
     private async Task SendMessage()
     {
         try
         {
             ChatHistory.Add(new Message { Sender = "User", Text = UserInput });
             IsLoading = true;
-            string response = await chatBot.CreateAsync(UserInput);
+            string response = await Common.ChatCompletion.CreateAsync(UserInput);
             UserInput = string.Empty;
             ChatHistory.Add(new Message { Sender = "AI", Text = response });
             UserInput = string.Empty;
