@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCompletion.Common", "Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCompletion.Blazor", "ChatCompletion.Blazor\ChatCompletion.Blazor.csproj", "{070F0F68-445E-449B-8D84-9503F8EEE72A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCompletion.Tasks.Console", "ChatCompletion.Tasks.Console\ChatCompletion.Tasks.Console.csproj", "{D872D673-9877-474A-ADD4-9A627BD3151F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{070F0F68-445E-449B-8D84-9503F8EEE72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{070F0F68-445E-449B-8D84-9503F8EEE72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{070F0F68-445E-449B-8D84-9503F8EEE72A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D872D673-9877-474A-ADD4-9A627BD3151F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D872D673-9877-474A-ADD4-9A627BD3151F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D872D673-9877-474A-ADD4-9A627BD3151F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D872D673-9877-474A-ADD4-9A627BD3151F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
